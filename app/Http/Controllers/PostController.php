@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostFormRequest;
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
 {
@@ -14,7 +16,19 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $userId = Auth::id();
+        $posts = POST::withTotalVisitCount()->get();
+        if (!$userId)
+            $posts = POST::where(['price' => 0])->withTotalVisitCount()->get();
+
+        $count = Cache::remember(
+            'count.posts.' . $userId,
+            now()->addSeconds(30),
+            function () use ($posts) {
+                return Post::count();
+            }
+        );
+        return view('posts.index', ['posts' => $posts, 'count' => $count]);
     }
 
     /**
@@ -35,7 +49,8 @@ class PostController extends Controller
         $file = $request->file('image');
         $path = $file->store('uploads');
 
-        Post::store([
+        Post::create([
+            'user_id' => Auth::id(),
             'title' => $request->title,
             'description' => $request->description,
             'image_path' => $path,
@@ -50,6 +65,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $comments = $post->comments;
+        $user = $post->user;
+        return view('posts.post', compact('post', 'comments'));
     }
 
     /**
@@ -71,8 +89,7 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Comment $comment)
     {
-        //
     }
 }
