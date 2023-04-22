@@ -39,11 +39,11 @@
     <main>
         <div class="max-w-7xl mx-auto container">
             <div class="bg-white my-12 p-6 overflow-hidden shadow-xl sm:rounded-lg">
-                <img src="{{ Storage::url($post['image_path']) }}" alt="{{ $post['title'] }}"
+                <img src="{{ Storage::url($post->image_path) }}" alt="{{ $post->title }}"
                     class="w-full h-auto max-h-[800px] object-contain">
                 <div class="p-6">
-                    <h3 class="text-lg font-medium text-gray-900">{{ $post['title'] }}</h3>
-                    <p class="mt-2 text-gray-600">{{ $post['description'] }}</p>
+                    <h3 class="text-lg font-medium text-gray-900">{{ $post->title }}</h3>
+                    <p class="mt-2 text-gray-600">{{ $post->description }}</p>
                     <div class="mt-4 flex items-center justify-between">
                         <div class="flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400 mr-1" fill="none"
@@ -52,9 +52,9 @@
                                     d="M5 13l4 4L19 7">
                                 </path>
                             </svg>
-                            <span class="text-gray-600">{{ $post['views_count'] }} views</span>
+                            <span class="text-gray-600">{{ $post->visit_count_total }} views</span>
                         </div>
-                        @if (Auth::check() && $post['user_id'] === Auth::user()->id)
+                        @if (Auth::check() && $post->user_id === Auth::user()->id)
                             <form action="/posts/{{ $post->image_id }}" method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -79,8 +79,8 @@
                                 <div class="bg-gray-100 rounded-lg p-3 my-2 relative">
                                     <div class="flex justify-start gap-3">
                                         <img class="h-10 rounded-full"
-                                            src="https://www.gravatar.com/avatar/{{ md5($post['email']) }}?d=mp"
-                                            alt="{{ $post['name'] }}">
+                                            src="https://www.gravatar.com/avatar/{{ md5($comment->email) }}?d=mp"
+                                            alt="{{ $comment->name }}">
                                         <div>
                                             <div class="flex justify-start flex-wrap items-baseline gap-2">
                                                 <span class="text-gray-800 text-xl">{{ $comment->user_name }}</span>

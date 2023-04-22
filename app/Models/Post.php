@@ -18,7 +18,6 @@ class Post extends Model implements CanVisit
         'description',
         'price',
         'image_path',
-        'views_count',
     ];
 
     public function user()

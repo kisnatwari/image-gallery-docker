@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Post;
 
 return new class extends Migration
 {
@@ -19,7 +18,6 @@ return new class extends Migration
             $table->text('description');
             $table->float('price');
             $table->string('image_path');
-            $table->unsignedBigInteger('views_count')->default(0);
             $table->timestamps();
         });
     }

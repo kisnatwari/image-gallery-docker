@@ -66,12 +66,19 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $id = $post->id;
+        $post = Post::where('id', $id)->withTotalVisitCount()->first();
         $comments = $post->comments;
-        $user = $post->user;
+        if ($comments->isNotEmpty()) {
+            $comments = $comments->toQuery()->latest()->get();
+        }
+        $post->visit()->customInterval(now()->addSeconds(30))->withIp()->withUser();
         if (Auth::user())
             return view('posts.post', compact('post', 'comments'));
-        else
+        else if (!$post->price > 0)
             return view('guest-posts.post', compact('post', 'comments'));
+        else
+            return redirect("/");
     }
 
     /**
@@ -81,7 +88,7 @@ class PostController extends Controller
     {
         if (!Auth::user())
             return redirect('/');
-        $posts = Auth::user()->posts;
+        $posts = Post::where('user_id', Auth::id())->withTotalVisitCount()->get();
         return view("dashboard")->with('posts', $posts);
     }
 
