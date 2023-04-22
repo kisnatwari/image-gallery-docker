@@ -14,12 +14,15 @@
                             <a href="/posts/{{ $post->id }}"
                                 class="bg-gray-200 relative rounded-lg overflow-hidden shadow-md">
                                 <img src="{{ Storage::url($post->image_path) }}" alt="{{ $post->title }}"
-                                    class="w-full h-full object-cover object-center">
+                                    class="w-full h-full object-cover object-center min-h-[200px]">
                                 <div
                                     class="p-4 pt-5 absolute top-0 left-0 w-full h-full flex flex-col gap-2 justify-end bg-gradient-to-t from-slate-950 opacity-0 hover:opacity-100 duration-300">
                                     <h2 class="font-bold text-lg text-gray-200 line-clamp-1">{{ $post->title }}</h2>
                                     <p class="text-gray-300 line-clamp-2 leading-tight">{{ $post->description }}</p>
-                                    <p class="text-gray-400 text-sm">Total Views: {{ $post->visit_count_total }}</p>
+                                    <div class="flex justify-between">
+                                        <p class="text-gray-300 leading-tight">${{ $post->price }}</p>
+                                        <p class="text-gray-400 text-sm">Views: {{ $post->visit_count_total }}</p>
+                                    </div>
                                 </div>
                             </a>
                         @endforeach
