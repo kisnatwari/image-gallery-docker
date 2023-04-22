@@ -28,6 +28,9 @@
                         @endforeach
 
                     </div>
+                    <div>
+                        {{ $posts->links() }}
+                    </div>
                     @if (session('success'))
                         <div class="bg-green-700 success_alert text-white p-5 my-4 rounded-lg">
                             {{ session('success') }}

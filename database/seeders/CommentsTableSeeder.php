@@ -21,7 +21,7 @@ class CommentsTableSeeder extends Seeder
         for ($i = 0; $i < 40; $i++) {
             Comment::create([
                 'user_id' => $faker->numberBetween(1, $max_user_id),
-                'post_id' => $faker->numberBetween(1, $max_user_id),
+                'post_id' => $faker->numberBetween(1, $max_post_id),
                 'comment' => $faker->sentence,
             ]);
         }

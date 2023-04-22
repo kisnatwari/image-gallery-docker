@@ -17,9 +17,9 @@ class PostController extends Controller
     public function index()
     {
         $userId = Auth::id();
-        $posts = POST::withTotalVisitCount()->get();
+        $posts = POST::withTotalVisitCount()->paginate(12);
         if (!$userId)
-            $posts = POST::where(['price' => 0])->withTotalVisitCount()->get();
+            $posts = POST::where(['price' => 0])->withTotalVisitCount()->paginate(12);
 
         Cache::remember(
             'count.posts.' . $userId,
@@ -89,7 +89,7 @@ class PostController extends Controller
     {
         if (!Auth::user())
             return redirect('/');
-        $posts = Post::where('user_id', Auth::id())->withTotalVisitCount()->get();
+        $posts = Post::where('user_id', Auth::id())->withTotalVisitCount()->paginate(12);
         return view("dashboard")->with('posts', $posts);
     }
 
