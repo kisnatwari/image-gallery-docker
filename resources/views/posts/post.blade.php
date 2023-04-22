@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="max-w-7xl py-12 mx-auto container">
         <div class="bg-white p-6 overflow-hidden shadow-xl sm:rounded-lg">
-            <img src="{{ asset('storage/' . $post['image_path']) }}" alt="{{ $post['title'] }}"
+            <img src="{{ Storage::url($post['image_path']) }}" alt="{{ $post['title'] }}"
                 class="w-full h-auto max-h-[800px] object-contain">
             <div class="p-6">
                 <h3 class="text-lg font-medium text-gray-900">{{ $post['title'] }}</h3>
@@ -16,7 +16,7 @@
                         <span class="text-gray-600">{{ $post['views_count'] }} views</span>
                     </div>
                     @if (Auth::check() && $post['user_id'] === Auth::user()->id)
-                        <form action="/posts/{{ $post->image_id }}" method="POST">
+                        <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
@@ -37,9 +37,9 @@
                     <legend class="text-xl text-gray-700">Add a comment</legend>
                     <form action="/comments" method="POST" class="text-right mb-3">
                         @csrf
-                        <textarea name="comment" rows="3" autocomplete="false" placeholder="Write down a comment here....."
-                            class="w-full border-gray-400 resize-none"></textarea>
-                        <input type="hidden" name="post_id" value="{{ $post->post_id }}">
+                        <textarea name="comment" rows="3" required minlength="1" autocomplete="false"
+                            placeholder="Write down a comment here....." class="w-full border-gray-400 resize-none"></textarea>
+                        <input type="hidden" name="post_id" value="{{ $post->id }}">
                         <button type="submit"
                             class="bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md shadow-md">
                             Post a comment

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostFormRequest;
-use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +27,10 @@ class PostController extends Controller
                 return Post::count();
             }
         );
-        return view('posts.index', ['posts' => $posts, 'count' => $count]);
+        if (Auth::user())
+            return view('posts.index', ['posts' => $posts, 'count' => $count]);
+        else
+            return view('guest-posts.index', ['posts' => $posts, 'count' => $count]);
     }
 
     /**
@@ -44,11 +46,9 @@ class PostController extends Controller
      */
     public function store(PostFormRequest $request)
     {
-        //
         $request->validated();
         $file = $request->file('image');
-        $path = $file->store('uploads');
-
+        $path = $file->store('/public/uploads');
         Post::create([
             'user_id' => Auth::id(),
             'title' => $request->title,
@@ -57,7 +57,8 @@ class PostController extends Controller
             'price' => $request->price,
         ]);
 
-        return response()->json(['message' => 'Post Created Successfully'], 200);
+        session()->flash('success', 'Image uploaded successfully!');
+        return redirect("/posts");
     }
 
     /**
@@ -67,7 +68,21 @@ class PostController extends Controller
     {
         $comments = $post->comments;
         $user = $post->user;
-        return view('posts.post', compact('post', 'comments'));
+        if (Auth::user())
+            return view('posts.post', compact('post', 'comments'));
+        else
+            return view('guest-posts.post', compact('post', 'comments'));
+    }
+
+    /**
+     * Display the posts from logged in user.
+     */
+    public function myPost()
+    {
+        if (!Auth::user())
+            return redirect('/');
+        $posts = Auth::user()->posts;
+        return view("dashboard")->with('posts', $posts);
     }
 
     /**
@@ -89,7 +104,13 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy(Post $post)
     {
+        if (Auth::id() == $post->user->id) {
+            $post->delete();
+            return redirect('/posts');
+        } else {
+            die('Delete Failed');
+        }
     }
 }

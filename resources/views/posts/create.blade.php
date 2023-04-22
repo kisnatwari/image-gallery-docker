@@ -12,7 +12,7 @@
                             <div class="col-span-2">
                                 <div class="flex justify-center items-center h-full">
                                     <div
-                                        class="w-3/4 h-full border border-gray-300 shadow-sm bg-gray-100 relative mx-auto flex items-center justify-center overflow-hidden">
+                                        class="w-3/4 h-full border border-gray-300 border-dashed border-4 shadow-sm bg-gray-100 relative mx-auto flex items-center justify-center overflow-hidden">
                                         <strong class="text-gray-500">Add Image</strong>
                                         <input type="file" name="image"
                                             class="cursor-pointer absolute opacity-0 top-0 left-0 w-full h-full min-h-">
@@ -58,12 +58,6 @@
                         @endif
 
                     </form>
-                    @if (session('success'))
-                        <div class="bg-green-700 text-white p-5 my-4 rounded-lg">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
                 </div>
             </div>
         </div>

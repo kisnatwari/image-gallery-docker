@@ -17,16 +17,9 @@ use Barryvdh\Debugbar\Facades\Debugbar;
 |
 */
 
-Route::get('/', function () {
-    Debugbar::info("This is an info message");
-    Debugbar::warning("This is a warning message");
-    Debugbar::error("This is an error message");
-    return view('welcome');
-});
+Route::get('/', [PostController::class, 'index'])->name("/");
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [PostController::class, 'myPost'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

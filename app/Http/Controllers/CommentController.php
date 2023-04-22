@@ -29,7 +29,18 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (Auth::user()) {
+            $request->validate([
+                'post_id' => 'required|integer',
+                'comment' => 'required|string|min:1',
+            ]);
+            Comment::create([
+                'user_id' => Auth::id(),
+                'post_id' => $request->post_id,
+                'comment' => $request->comment
+            ]);
+            return redirect()->back();
+        }
     }
 
     /**
