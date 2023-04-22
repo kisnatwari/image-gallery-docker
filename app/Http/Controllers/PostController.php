@@ -116,13 +116,42 @@ class PostController extends Controller
     {
         if (Auth::id() == $post->user->id) {
             $imagePath = $post->image_path;
-            $post->delete();
+            $post->delete();/* 
             if (Storage::exists($imagePath)) {
                 Storage::delete($imagePath);
-            }
+            } */
             return redirect('/posts');
         } else {
             die('Delete Failed');
         }
+    }
+
+
+    public function showTrash()
+    {
+        if (!auth()->check())
+            return redirect('/');
+        $posts = Post::where('user_id', Auth::id())->onlyTrashed()->get();
+        return view("trash")->with('posts', $posts);
+    }
+
+    public function forceDelete($id)
+    {
+        $post = Post::where(['user_id' => Auth::id()])->onlyTrashed()->find($id);
+        $imagePath = $post->image_path;
+        if ($post) {
+            if (Storage::exists($imagePath))
+                Storage::delete($imagePath);
+            $post->forceDelete();
+        }
+        return redirect()->back();
+    }
+
+    public function restore($id)
+    {
+        $post = Post::where(['user_id' => Auth::id()])->onlyTrashed()->find($id);
+        if ($post)
+            $post->restore();
+        return redirect()->back();
     }
 }

@@ -30,6 +30,10 @@ Route::middleware('auth')->group(function () {
 Route::resource("posts", PostController::class);
 Route::resource("comments", CommentController::class);
 
+Route::get("/trash", [PostController::class, 'showTrash'])->middleware(['auth', 'verified'])->name('trash');
+Route::get("/posts/forceDelete/{id}", [PostController::class, 'forceDelete'])->middleware(['auth', 'verified'])->name('posts.forceDelete');
+Route::get("/posts/restore/{id}", [PostController::class, 'restore'])->middleware(['auth', 'verified'])->name('posts.restore');
+
 Route::get("/posts/create", function () {
     return view('posts.create');
 });
