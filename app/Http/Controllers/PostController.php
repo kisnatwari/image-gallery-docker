@@ -7,6 +7,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -20,7 +21,7 @@ class PostController extends Controller
         if (!$userId)
             $posts = POST::where(['price' => 0])->withTotalVisitCount()->get();
 
-        $count = Cache::remember(
+        Cache::remember(
             'count.posts.' . $userId,
             now()->addSeconds(30),
             function () use ($posts) {
@@ -28,9 +29,9 @@ class PostController extends Controller
             }
         );
         if (Auth::user())
-            return view('posts.index', ['posts' => $posts, 'count' => $count]);
+            return view('posts.index', ['posts' => $posts]);
         else
-            return view('guest-posts.index', ['posts' => $posts, 'count' => $count]);
+            return view('guest-posts.index', ['posts' => $posts]);
     }
 
     /**
@@ -114,7 +115,11 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         if (Auth::id() == $post->user->id) {
+            $imagePath = $post->image_path;
             $post->delete();
+            if (Storage::exists($imagePath)) {
+                Storage::delete($imagePath);
+            }
             return redirect('/posts');
         } else {
             die('Delete Failed');
