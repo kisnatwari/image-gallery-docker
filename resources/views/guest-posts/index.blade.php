@@ -57,6 +57,9 @@
                     </a>
                 @endforeach
             </div>
+            <div>
+                {{ $posts->links() }}
+            </div>
         </div>
     </main>
 </body>

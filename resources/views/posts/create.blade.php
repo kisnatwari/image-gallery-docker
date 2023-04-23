@@ -28,7 +28,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="price" class="block text-gray-700 font-bold mb-2">Price:($)</label>
-                                    <input type="number" name="price" id="price"
+                                    <input type="text" name="price" id="price" placeholder="0.00"
+                                        value="0.00"
                                         class="border rounded w-full py-2 px-3 text-gray-500 leading-tight focus:outline-none focus:shadow-outline"
                                         required>
                                 </div>

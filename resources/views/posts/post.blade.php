@@ -16,11 +16,18 @@
                         <span class="text-gray-600">{{ $post->visit_count_total }} views</span>
                     </div>
                     @if (Auth::check() && $post->user_id === Auth::user()->id)
-                        <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
-                        </form>
+                        <div class="flex gap-2">
+                            <form action="{{ route('posts.edit', $post->id) }}" method="get">
+                                <button type="submit"
+                                    class="text-indigo-500 bg-indigo-50 hover:bg-indigo-100 px-3 py-2 rounded-md hover:text-indigo-700 duration-100">Edit</button>
+                            </form>
+                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="text-red-500 bg-red-50 px-3 py-2 hover:text-red-700 hover:bg-red-100 rounded-md duration-100">Delete</button>
+                            </form>
+                        </div>
                     @endif
                 </div>
             </div>

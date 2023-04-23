@@ -30,13 +30,15 @@
                                             <img src="{{ Storage::url($post->image_path) }}" alt="{{ $post->title }}"
                                                 class="mx-auto rounded-lg max-w-[70px] max-h-[70px]">
                                         </td>
-                                        <td class="py-2">{{ $post->title }}</td>
-                                        <td class="py-2">{{ $post->description }}</td>
                                         <td class="py-2">
-                                            <div class="flex justify-center space-x-4">
+                                            <span>{{ $post->title }}</span>
+                                        </td>
+                                        <td class="py-2 line-clamp-3">{{ $post->description }}</td>
+                                        <td class="py-2 min-w-[150px]">
+                                            <div class="flex justify-center flex-wrap gap-1">
                                                 <a href="{{ route('posts.forceDelete', ['id' => $post->id]) }}"
                                                     class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
-                                                    Force Delete
+                                                    Delete
                                                 </a>
                                                 <a href="{{ route('posts.restore', ['id' => $post->id]) }}"
                                                     class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">

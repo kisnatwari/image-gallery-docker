@@ -40,6 +40,7 @@ class PostController extends Controller
     public function create()
     {
         //
+        return view('posts.create');
     }
 
     /**
@@ -59,7 +60,7 @@ class PostController extends Controller
         ]);
 
         session()->flash('success', 'Image uploaded successfully!');
-        return redirect("/posts");
+        return redirect("/");
     }
 
     /**
@@ -98,7 +99,10 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $post = Post::where('user_id', Auth::id())->find($id);
+        if (!$post)
+            return redirect("/");
+        return view("posts.edit")->with('post', $post);
     }
 
     /**
@@ -106,7 +110,28 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title' => "required|min:1",
+            'description' => "required|min:1",
+            'price' => "required|numeric"
+        ]);
+        $post = Post::where('user_id', Auth::id())->find($id);
+        if (!$post) {
+            return redirect("/");
+        }
+        $oldImagePath = $post->image_path;
+        if ($request->file('image')) {
+            $file = $request->file('image');
+            $path = $file->store('/public/uploads');
+            Storage::delete($oldImagePath);
+            $post->image_path = $path;
+        }
+        $post->title = $request->title;
+        $post->description = $request->description;
+        $post->price = $request->price;
+        $post->save();
+
+        return redirect("/dashboard");
     }
 
     /**
@@ -120,7 +145,7 @@ class PostController extends Controller
             if (Storage::exists($imagePath)) {
                 Storage::delete($imagePath);
             } */
-            return redirect('/posts');
+            return redirect('/');
         } else {
             die('Delete Failed');
         }

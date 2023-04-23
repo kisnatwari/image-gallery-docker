@@ -34,8 +34,4 @@ Route::get("/trash", [PostController::class, 'showTrash'])->middleware(['auth', 
 Route::get("/posts/forceDelete/{id}", [PostController::class, 'forceDelete'])->middleware(['auth', 'verified'])->name('posts.forceDelete');
 Route::get("/posts/restore/{id}", [PostController::class, 'restore'])->middleware(['auth', 'verified'])->name('posts.restore');
 
-Route::get("/posts/create", function () {
-    return view('posts.create');
-});
-
 require __DIR__ . '/auth.php';

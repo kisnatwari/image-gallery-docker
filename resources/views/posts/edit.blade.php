@@ -4,15 +4,16 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="flex justify-between mb-3">
-                        <h1 class="text-2xl">Image Showcase (Add Images) </h1>
+                        <h1 class="text-2xl">Image Showcase (Edit Post) </h1>
                     </div>
-                    <form method="POST" action="/posts" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('posts.update', $post->id) }}" enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
                         <div class="grid grid-cols-5 gap-4">
                             <div class="col-span-2">
                                 <div class="flex justify-center items-center h-full">
-                                    <div
-                                        class="w-3/4 h-full border border-gray-300 shadow-sm bg-gray-100 relative mx-auto flex items-center justify-center overflow-hidden">
+                                    <div class="w-3/4 h-full border border-gray-300 shadow-sm bg-gray-100 relative mx-auto flex items-center justify-center overflow-hidden"
+                                        style="background-image: url({{ Storage::url($post->image_path) }}); background-size: cover; background-origin: center center">
                                         <strong class="text-gray-500">Add Image</strong>
                                         <input type="file" name="image"
                                             class="cursor-pointer absolute opacity-0 top-0 left-0 w-full h-full min-h-">
@@ -21,8 +22,14 @@
                             </div>
                             <div class="col-span-3">
                                 <div class="mb-3">
-                                    <label for="name" class="block text-gray-700 font-bold mb-2">Name:</label>
-                                    <input type="text" name="name" id="name"
+                                    <label for="title" class="block text-gray-700 font-bold mb-2">Title:</label>
+                                    <input type="text" name="title" id="title"
+                                        class="border rounded w-full py-2 px-3 text-gray-500 leading-tight focus:outline-none focus:shadow-outline"
+                                        value="{{ $post->title }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="price" class="block text-gray-700 font-bold mb-2">Price:($)</label>
+                                    <input type="text" name="price" id="price" value="{{ $post->price }}"
                                         class="border rounded w-full py-2 px-3 text-gray-500 leading-tight focus:outline-none focus:shadow-outline"
                                         required>
                                 </div>
@@ -31,14 +38,14 @@
                                         class="block text-gray-700 font-bold mb-2">Description:</label>
                                     <textarea name="description" id="description"
                                         class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                        rows="4" required></textarea>
+                                        rows="4" required>{{ $post->description }}</textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="text-right">
                             <button type="submit"
                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                Post Now
+                                Update post
                             </button>
                         </div>
                         @if ($errors->any())
