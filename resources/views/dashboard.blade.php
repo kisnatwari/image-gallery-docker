@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-gray-50 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="flex justify-between mb-3">
                         <h1 class="text-2xl">Image Gallery (Your Posts)</h1>
@@ -18,16 +18,15 @@
                     <div class="grid grid-cols-4 gap-6">
                         @foreach ($posts as $post)
                             <a href="/posts/{{ $post->id }}"
-                                class="bg-gray-200 relative rounded-lg overflow-hidden shadow-md">
+                                class="bg-white relative rounded-lg overflow-hidden shadow-md">
                                 <img src="{{ Storage::url($post->image_path) }}" alt="{{ $post->title }}"
-                                    class="w-full h-full object-cover object-center min-h-[200px]">
-                                <div
-                                    class="p-4 pt-5 absolute top-0 left-0 w-full h-full flex flex-col gap-2 justify-end bg-gradient-to-t from-slate-950 opacity-0 hover:opacity-100 duration-300">
-                                    <h2 class="font-bold text-lg text-gray-200 line-clamp-1">{{ $post->title }}</h2>
-                                    <p class="text-gray-300 line-clamp-2 leading-tight">{{ $post->description }}</p>
-                                    <div class="flex justify-between">
-                                        <p class="text-gray-300 leading-tight">${{ $post->price }}</p>
-                                        <p class="text-gray-400 text-sm">Views: {{ $post->visit_count_total }}</p>
+                                    class="w-full max-h-[250px] object-cover object-center min-h-[200px]">
+                                <div class="p-4">
+                                    <h1 class="text-lg font-bold text-slate-700 line-clamp-2">{{ $post->title }}</h1>
+                                    <h1 class="text-md line-clamp-2 text-slate-600">{{ $post->description }}</h1>
+                                    <div class="flex justify-between text-sm mt-3 text-slate-600">
+                                        <span>Views: {{ $post->visit_count_total }}</span>
+                                        <span>${{ $post->price }}</span>
                                     </div>
                                 </div>
                             </a>
