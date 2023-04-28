@@ -44,6 +44,9 @@
                 <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900">{{ $post->title }}</h3>
                     <p class="mt-2 text-gray-600">{{ $post->description }}</p>
+                    <div class="text-md text-slate-500 font-bold mt-4">
+                        Post Created: {{ $post->created_at->diffForHumans() }}
+                    </div>
                     <div class="mt-4 flex items-center justify-between">
                         <div class="flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400 mr-1" fill="none"

@@ -22,6 +22,9 @@
                                         <span>Views: {{ $post->visit_count_total }}</span>
                                         <span>${{ $post->price }}</span>
                                     </div>
+                                    <div class="text-xs text-end text-slate-600">
+                                        {{ $post->created_at->diffForHumans() }}
+                                    </div>
                                 </div>
                             </a>
                         @endforeach
