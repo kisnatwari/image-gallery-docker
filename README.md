@@ -26,7 +26,7 @@ This is a project developed as a public image gallery app, where users can view 
 ## Installation
 
   
-
+(Following worked on my pc)
   
 
 1. Clone the project from Github: `git clone https://github.com/kisnatwari/image-showcase-docker.git`
